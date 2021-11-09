@@ -12,18 +12,19 @@ Graph Algorithms -Your final project must implement at least two graph data algo
 
 
 Any Shortest Path algorithm to find preferred routes
-Input: initial location, final location
+Input: start, destination
 Algorithm: 
                1. Push item into stack
                2. Update distance and neighbor
                3. Accumulate shortest path
 Output: shortest path
 Landmark Path
-Input:
+Input: vertex of node 1, vertex of node 2, landmark
 Algorithm:
                1. Choose vertex between nodes as landmark
                2. Calculate shortest path between vertex
-Output: 
+               3. Find shortest path between airports
+Output: shortest path
 
 Timeline - As a team, identify a list of tasks such as data acquisition, data processing, completion of each individual algorithm, production of final deliverables, etc… and write a proposed timeline for the completion of these tasks. You are not required to adhere strictly to this timeline but it should represent a reasonable set of benchmarks to strive for. For example, stating that you will finish all graph algorithms over the span of a single week is not reasonable. You will be expected to accomplish at least some of these tasks by the mid-project check-in.
 
