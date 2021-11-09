@@ -18,4 +18,5 @@ Time Commitment - On average, each member of the group should spend the same amo
 Conflict Resolution - If we have situations where there is a disagreement towards members, we will discuss them during our Saturday meetings and remain courteous and respectful of each other's opinions. In the hypothetical situations that a member is habitually late, we will give them reminders to come to the meetings an hour before the meeting and if needed, even closer to the meeting. 
 
 Signed, 
-Molly Hu  11/08/2021
+Megana Adigal 11/08/2021
+
