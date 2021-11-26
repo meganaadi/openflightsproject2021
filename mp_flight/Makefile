@@ -8,7 +8,7 @@ EXE_OBJ =   main.o
 OBJS =   main.o Airport.o Route.o Graph.o
 
 
-#CPP_FILES += $(wildcard colorPicker/*.cpp)
+CPP_FILES += $(wildcard search/*.cpp)
 CPP_FILES += $(wildcard util/*.cpp)
 OBJS += $(CPP_FILES:.cpp=.o)
 

@@ -1,6 +1,7 @@
 #include "../cs225/catch/catch.hpp"
 
 #include "../Airport.h"
+#include "../Graph.h"
 #include "../util/FileHelper.h"
 
 #include <sstream>
@@ -9,6 +10,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <queue>          // std::priority_queue
 
 using namespace std;
 
@@ -72,17 +74,22 @@ TEST_CASE("test_read_airport_data_small", "[weight=15]")
 {
     FileHelper helper;
     vector<vector<string>> attributesByLine = helper.getAttributesByLine("data/airports_small.dat", ',');
-    REQUIRE(14 == attributesByLine.size());
+    REQUIRE(12 == attributesByLine.size());
 }
 
-TEST_CASE("test_read_airport_small", "[weight=15]")
+TEST_CASE("test_read_airport_data_small_with_routes", "[weight=15]")
 {
     FileHelper helper;
 
-    std::unordered_map<string,Airport> airports = helper.getAirportMapByCode("data/airports_small.dat", ',', true);
-    REQUIRE(12 == airports.size());
+    const std::unordered_map<string,Airport>& airports = helper.getAirportMapByCode("data/airports_small.dat", ',', true);
+    REQUIRE(10 == airports.size());
 
-    unordered_map<string,Route> routes = helper.getRouteMapByCode("data/routes.dat",',',airports);
+    Graph graph = Graph(true,true);
+    graph.setAirports(airports);
+    
+    helper.readRoutesAndAddtoGraph("data/routes.dat",',',graph);
+    //unordered_map<string,Route> routes = helper.getRouteMapByCode("data/routes.dat",',',airports);
+
 }
 
 TEST_CASE("test_read_airport_large", "[weight=15]")
@@ -92,29 +99,25 @@ TEST_CASE("test_read_airport_large", "[weight=15]")
     std::unordered_map<string,Airport> airports = helper.getAirportMapByCode("data/airports.dat", ',',true);
     REQUIRE(airports.size() > 6000);
 
-    Airport& ord = airports.at("ORD");
-    Airport* p1 = &ord;
+    Graph graph = Graph(true,true);
+    graph.setAirports(airports);
+    helper.readRoutesAndAddtoGraph("data/routes.dat",',',graph);
 
-    unordered_map<string,Route> routes = helper.getRouteMapByCode("data/routes.dat",',',airports);
+    const Airport& ord = graph.getAirport("ORD");
 
-    Airport& ord2 = airports.at("ORD");
-    Airport* p2 = &ord2;
 
-    REQUIRE (p1 == p2);
-
-    for(std::pair<const std::string, Route *> rp : ord2.getRoutes()) {
+    for(std::pair<const std::string, Route *> rp : ord.getRoutes()) {
         Route* r = rp.second;
         //std::cout << "Source: " << r->getFrom()->getIataCode();
         //std::cout << ";  Dest: " << r->getTo()->getIataCode();
         //std::cout << ";  Is Domestic: " << r->isDomestic() << std::endl;
-        Airport* p3 = r->getFrom();
-        REQUIRE (p1 == p3);
-        Route& r2 = routes.at(r->getCodeName());
-        REQUIRE( r == &r2);
+        Airport* p = r->getFrom();
+        REQUIRE (p == &ord);
     }
 
 
 }
+
 
 
 

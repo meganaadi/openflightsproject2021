@@ -44,7 +44,7 @@ void Route::initValues() {
 }
 
 Route::Route() {
-
+    fromCode = route_util::INVALID_AIRPORT_CODE;
 }
 
 Route::Route(string _fromCode, Airport* _from, 

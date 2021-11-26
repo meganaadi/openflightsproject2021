@@ -2,6 +2,7 @@
 
 #include "Airport.h"
 
+#include <limits>
 #include <string>
 
 
@@ -10,6 +11,9 @@ using std::string;
 
 
 namespace route_util {
+    const string INVALID_AIRPORT_CODE = "INVALID_CODE";
+    const int INVALID_WEIGHT = INT_MIN;
+    //gets the distance between two airports in km
     int getDistance(Airport* from, Airport* to);
     string getRouteCode(string fromCode, string toCode);
 }  

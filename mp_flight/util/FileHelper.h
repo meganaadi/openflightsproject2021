@@ -7,6 +7,7 @@
 
 #include "../Airport.h"
 #include "../Route.h"
+#include "../Graph.h"
 
 
 using std::string;
@@ -18,8 +19,8 @@ class FileHelper {
     public:
         static unordered_map<string,Airport> getAirportMapByCode(const string fileName, char delim, bool skipMissingIataCode);
 
-        
-        static unordered_map<string,Route> getRouteMapByCode(const string fileName, char delim, unordered_map<string,Airport>& airportByCode);
+        static void readRoutesAndAddtoGraph(const string fileName, char delim, Graph& graph);
+        //static unordered_map<string,Route> getRouteMapByCode(const string fileName, char delim, unordered_map<string,Airport>& airportByCode);
 
         static vector<vector<string>> getAttributesByLine(const string fileName, char delim);
         static string removeDoubleQuotes(string input);

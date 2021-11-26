@@ -50,7 +50,7 @@ $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)/tests
 # mp_flight specific
 	@mkdir -p $(OBJS_DIR)/util
-#	@mkdir -p $(OBJS_DIR)/colorPicker
+	@mkdir -p $(OBJS_DIR)/search
 
 
 # Rules for compiling source code.

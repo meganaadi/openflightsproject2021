@@ -6,8 +6,6 @@
 3830,"Chicago O'Hare International Airport","Chicago","United States","ORD","KORD",41.9786,-87.9048,672,-6,"A","America/Chicago","airport","OurAirports"
 3576,"Miami International Airport","Miami","United States","MIA","KMIA",25.79319953918457,-80.29060363769531,8,-5,"A","America/New_York","airport","OurAirports"
 3494,"Newark Liberty International Airport","Newark","United States","EWR","KEWR",40.692501068115234,-74.168701171875,18,-5,"A","America/New_York","airport","OurAirports"
-3093,"Indira Gandhi International Airport","Delhi","India","DEL","VIDP",28.5665,77.103104,777,5.5,"N","Asia/Calcutta","airport","OurAirports"
-2997,"Chhatrapati Shivaji International Airport","Mumbai","India","BOM","VABB",19.0886993408,72.8678970337,39,5.5,"N","Asia/Calcutta","airport","OurAirports"
 3131,"Kempegowda International Airport","Bangalore","India","BLR","VOBL",13.1979,77.706299,3000,5.5,"N","Asia/Calcutta","airport","OurAirports"
 3143,"Mangalore International Airport","Mangalore","India","IXE","VOML",12.9612998962,74.8900985718,337,5.5,"N","Asia/Calcutta","airport","OurAirports"
 3144,"Shuttle Service","Shuttle","United States","ZQZ","VOML",41.9786,-87.9048,672,-6,"A","America/Chicago","Shuttle","OurAirports"
