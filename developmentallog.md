@@ -4,3 +4,8 @@
 
 11/22/2021:
 We have completed the initial skeleton for the project, where we have created classes for airports and routes to represent the verticies and edges. We also wrote helper and utility classes to read the data files regarding the airports and routes. We also developed several test cases for making sure the code compiles and the file is loaded properly. 
+
+11/26/2021
+Added graph class implemenation 
+implemented user handling commands 
+added minor changes for airports and routes
