@@ -9,3 +9,7 @@ We have completed the initial skeleton for the project, where we have created cl
 Added graph class implemenation 
 implemented user handling commands 
 added minor changes for airports and routes
+
+11/28/2021
+Doing our weekly meeting/progress report for the week.
+Possibly making minor changes in the Airport class and Route class, maybe adding an operator, and adding a function to check if the airports are the same (but not a definite change). We are also changing up our traversal to BFS. We will be getting started on our BFS implementation and it will be completed by the end of the week, and also starting on the Dijkstra's algorithm. 
