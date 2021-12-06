@@ -76,6 +76,8 @@ class Graph {
          */
         void addRoute(string fromCode, string toCode);
 
+        void addRoute(string fromCode, string toCode, int distance);
+
         size_t getNumberOfAirports();
 
 

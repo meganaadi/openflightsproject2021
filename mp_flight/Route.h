@@ -24,6 +24,9 @@ class Route {
         Route(string _fromCode, Airport* _from, 
         string _toCode, Airport* _to);
 
+        Route(string _fromCode, Airport* _from, 
+        string _toCode, Airport* _to, int _distance);
+
         bool isDomestic();
 
         string getCodeName() const;

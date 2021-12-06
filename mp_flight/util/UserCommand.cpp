@@ -91,7 +91,7 @@ string UserCommand::executeSearch() {
             }
             //everything looks good for airport search
             Search_Dijkstra sd;
-            vector<Route*> routes = sd.searchMyFlight(graph,commands[1],iataCode);
+            vector<const Route*> routes = sd.searchMyFlight(graph,commands[1],iataCode);
             string s = search_sp_util::displayMyFlight(routes);
             return s;
     }

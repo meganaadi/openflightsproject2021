@@ -88,6 +88,24 @@ void Graph::addAirport(Airport airport) {
     airportMapByCode[airport.getIataCode()] = airport;      //copy construction
 }
 
+void Graph::addRoute(string fromCode, string toCode, int distance) {
+    //identifier for this route
+    string routeCodeName = route_util::getRouteCode(fromCode,toCode);
+    unordered_map<string,Route>::iterator routeLookup = routes.find(routeCodeName);
+    if(routeLookup != routes.end()) return;     //if present simpy return
+    unordered_map<string,Airport>::iterator lookup = airportMapByCode.find(fromCode);
+    if(lookup != airportMapByCode.end()) {  //if departure airport exists
+        Airport* from = &(lookup->second);
+        lookup = airportMapByCode.find(toCode);
+        if(lookup != airportMapByCode.end()) {  //if arrival airport exists
+            Airport* to = &(lookup->second);
+            routes[routeCodeName] = Route(fromCode,from,toCode,to,distance);
+            //add this as an outbound flight to departure airport
+            from->addRoute(&routes.at(routeCodeName));
+        }
+    }
+}
+
 void Graph::addRoute(string fromCode, string toCode) {
     //identifier for this route
     string routeCodeName = route_util::getRouteCode(fromCode,toCode);

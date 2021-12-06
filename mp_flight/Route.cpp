@@ -53,6 +53,12 @@ Route::Route(string _fromCode, Airport* _from,
     initValues();
 }
 
+Route::Route(string _fromCode, Airport* _from, 
+        string _toCode, Airport* _to, int _distance) : fromCode(_fromCode), from(_from),
+        toCode(_toCode), to(_to), distance(_distance) {
+    codeName = route_util::getRouteCode(fromCode,toCode);
+}
+
 bool Route::isDomestic() {
     if(from->getCountry() == to->getCountry()) return true;
     return false;

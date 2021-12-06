@@ -15,7 +15,7 @@ using std::unordered_map;
 
 
 namespace search_sp_util {
-    string displayMyFlight(vector<Route*>);
+    string displayMyFlight(vector<const Route*>);
     //unordered_map<string,int> distance;
     
 }
@@ -24,10 +24,11 @@ namespace search_sp_util {
 class Search_Dijkstra {
     public:
         Search_Dijkstra();
-        vector<Route*> searchMyFlight(Graph graph, string fromCode, string toCode);
+        vector<const Route*> searchMyFlight(Graph graph, string fromCode, string toCode);
         void findShortestPath(Graph& G, string fromCode);
 
     private:
         unordered_map<string,string> predecessor;
+        
         void init();
 };
