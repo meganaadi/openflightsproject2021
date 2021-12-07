@@ -13,3 +13,8 @@ added minor changes for airports and routes
 11/28/2021
 Doing our weekly meeting/progress report for the week.
 Possibly making minor changes in the Airport class and Route class, maybe adding an operator, and adding a function to check if the airports are the same (but not a definite change). We are also changing up our traversal to BFS. We will be getting started on our BFS implementation and it will be completed by the end of the week, and also starting on the Dijkstra's algorithm. 
+
+12/06/2021
+We finished working on the template for our individual parts at this point. During the meeting we went over our individual parts. This includes BFS, Dijkstra's algorithm, and the IDDFS algorithm. We clarified a few implementations as well as worked together to resolve any issues that came up. The algorithms are now working, so we are working on test cases.
+
+
