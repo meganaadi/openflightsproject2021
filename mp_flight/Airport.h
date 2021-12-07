@@ -57,6 +57,9 @@ class Airport {
         double getLatitude() const;
         double getLongitude() const;
 
+        void setLabel(string _label);
+        string getLabel() const;
+
 
     private:
         string city;                   //3rd element
@@ -66,9 +69,10 @@ class Airport {
         double longitude;              //8th
         string transportationType;     //13th  must be "airport"
 
+        string label;
+
         //to store outbound flight route
         unordered_map<string,Route*> routes;
         
         void copy(const Airport& other);
 };
-

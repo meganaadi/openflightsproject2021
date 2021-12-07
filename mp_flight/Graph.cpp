@@ -2,6 +2,10 @@
 #include "Route.h"
 #include "Graph.h"
 
+#include "Airport.h"
+#include "Route.h"
+#include "Graph.h"
+
 #include <limits>
 #include <iostream>
 #include <stdexcept>
@@ -43,7 +47,7 @@ vector<string> Graph::getVertices() const {
     return vertices;
 }
 
-vector<string> Graph::getAdjacent(string iataCode) const {
+vector<string> Graph::getAdjacent(string iataCode) {
     vector<string> adjacent;
     if(airportExists(iataCode)) {
         for(Airport* ap : getAirport(iataCode).getAdjacent()) {
@@ -60,14 +64,14 @@ bool Graph::routeExists(string fromCode, string toCode) const {
     return true;
 }
 
-const Route* Graph::getRoute(string fromCode, string toCode) const {
+Route* Graph::getRoute(string fromCode, string toCode) {
     string routeCode = route_util::getRouteCode(fromCode,toCode);
     unordered_map<string,Route>::const_iterator iter = routes.find(routeCode);
     if(iter == routes.end()) return &(graph_util::INVALID_ROUTE);
-    return &(iter->second);
+    return &(routes[routeCode]);
 }
 
-int Graph::getEdgeWeight(string fromCode, string toCode) const {
+int Graph::getEdgeWeight(string fromCode, string toCode)  {
     if(!_weighted) 
         std::invalid_argument("Illegal state! getEdgeWeight called on a Graph with no weight!");
     const Route* rp = getRoute(fromCode,toCode);
@@ -124,10 +128,10 @@ void Graph::addRoute(string fromCode, string toCode) {
     }
 }
 
-const Airport& Graph::getAirport(string iataCode) const {
+Airport& Graph::getAirport(string iataCode)  {
     unordered_map<string,Airport>::const_iterator iter = airportMapByCode.find(iataCode);
     if(iter == airportMapByCode.end()) return graph_util::INVALID_AIRPORT;
-    return iter->second;
+    return airportMapByCode[iataCode];
 }
 
 bool Graph::airportExists(string iataCode) const {

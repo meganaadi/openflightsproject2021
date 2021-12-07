@@ -16,7 +16,8 @@ using std::unordered_map;
 class Search_BFS {
         public:
 
-            void BFS(Graph G, string fromCode);
+            void BFS(Graph& G);
+            void BFS(Graph& G, Airport& airport);
 
         private:
 

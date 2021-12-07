@@ -13,8 +13,12 @@ using std::unordered_map;
 
 
 namespace graph_util {
-    const Route INVALID_ROUTE = Route();
-    const Airport INVALID_AIRPORT = Airport();
+    const string UNEXPLORED = "Unexplored";
+    const string VISITED = "Visited";
+    const string DISCOVERY = "Discovery";
+    const string LABEL_CROSS = "Cross";
+    static Route INVALID_ROUTE = Route();
+    static Airport INVALID_AIRPORT = Airport();
 }
 
 class Graph {
@@ -39,13 +43,13 @@ class Graph {
 
         vector<string> getVertices() const;
 
-        vector<string> getAdjacent(string iataCode) const;
+        vector<string> getAdjacent(string iataCode) ;
 
         bool routeExists(string fromCode, string toCode) const;
 
-        const Route* getRoute(string fromCode, string toCode) const;
+        Route* getRoute(string fromCode, string toCode) ;
 
-        int getEdgeWeight(string fromCode, string toCode) const;
+        int getEdgeWeight(string fromCode, string toCode) ;
 
         /**
          * @brief Get the Airport object identified by iata code
@@ -53,7 +57,7 @@ class Graph {
          * @param iataCode 
          * @return Airport& 
          */
-        const Airport& getAirport(string iataCode) const;
+        Airport& getAirport(string iataCode);
 
 
 
@@ -89,5 +93,3 @@ class Graph {
 
         void copy(const Graph& other);
 };
-
-

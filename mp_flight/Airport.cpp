@@ -92,3 +92,11 @@ double Airport::getLongitude() const {
 }
 
 
+void Airport::setLabel(string _label) {
+    label = _label;
+}
+
+string Airport::getLabel() const {
+    return label;
+}
+
