@@ -9,7 +9,7 @@ using std::priority_queue;
 
 string search_sp_util::displayMyFlight(vector<const Route*> routes) {
     size_t size = routes.size();
-    if(size <2) return "No flights found! Try a nearby airport!!!";
+    if(size < 1) return "No flights found! Try a nearby airport!!!";
     string s = "";
     for(const Route* rp : routes) {
         s = s + rp->getFromCode() + " >> ";
