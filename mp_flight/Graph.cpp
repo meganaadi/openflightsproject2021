@@ -35,7 +35,7 @@ void Graph::copy(const Graph& other) {
     setAirports(other.airportMapByCode);
     unordered_map<string,Route>::const_iterator iter = other.routes.begin();
     for(; iter !=other.routes.end(); iter++) {
-        addRoute(iter->second.getFromCode(),iter->second.getToCode());
+        addRoute(iter->second.getFromCode(),iter->second.getToCode(),iter->second.getDistance());
     }
 }
 
@@ -50,25 +50,42 @@ vector<string> Graph::getVertices() const {
 vector<string> Graph::getAdjacent(string iataCode) {
     vector<string> adjacent;
     if(airportExists(iataCode)) {
-        for(Airport* ap : getAirport(iataCode).getAdjacent()) {
+        for(Airport* ap : getAirport(iataCode).getAdjacent(_directed)) {
             adjacent.push_back(ap->getIataCode());
         }
     }
     return adjacent;
 }
 
-bool Graph::routeExists(string fromCode, string toCode) const {
-    string routeCode = route_util::getRouteCode(fromCode,toCode);
-    unordered_map<string,Route>::const_iterator iter = routes.find(routeCode);
-    if(iter == routes.end()) return false;
+bool Graph::routeExists(string fromCode, string toCode) {
+    //string routeCode = route_util::getRouteCode(fromCode,toCode);
+    //unordered_map<string,Route>::const_iterator iter = routes.find(routeCode);
+    //if(iter == routes.end()) return false;
+    //return true;
+
+    Route* rp = getRoute(fromCode,toCode);
+    if(rp->getFromCode() == route_util::INVALID_AIRPORT_CODE) return false;
     return true;
+
+}
+
+const unordered_map<string,Route>& Graph::getRoutes() const {
+    return routes;
 }
 
 Route* Graph::getRoute(string fromCode, string toCode) {
     string routeCode = route_util::getRouteCode(fromCode,toCode);
     unordered_map<string,Route>::const_iterator iter = routes.find(routeCode);
-    if(iter == routes.end()) return &(graph_util::INVALID_ROUTE);
-    return &(routes[routeCode]);
+    if(iter != routes.end()) return &(routes[routeCode]);
+    if(!_directed) {    //if not directed reverse the route
+        routeCode = route_util::getRouteCode(toCode,fromCode);
+        unordered_map<string,Route>::const_iterator iter = routes.find(routeCode);
+        if(iter != routes.end()) return &(routes[routeCode]);
+    }
+
+    //not found
+    return &(graph_util::INVALID_ROUTE);
+    
 }
 
 int Graph::getEdgeWeight(string fromCode, string toCode)  {
@@ -93,37 +110,34 @@ void Graph::addAirport(Airport airport) {
 }
 
 void Graph::addRoute(string fromCode, string toCode, int distance) {
-    //identifier for this route
-    string routeCodeName = route_util::getRouteCode(fromCode,toCode);
-    unordered_map<string,Route>::iterator routeLookup = routes.find(routeCodeName);
-    if(routeLookup != routes.end()) return;     //if present simpy return
-    unordered_map<string,Airport>::iterator lookup = airportMapByCode.find(fromCode);
-    if(lookup != airportMapByCode.end()) {  //if departure airport exists
-        Airport* from = &(lookup->second);
-        lookup = airportMapByCode.find(toCode);
-        if(lookup != airportMapByCode.end()) {  //if arrival airport exists
-            Airport* to = &(lookup->second);
-            routes[routeCodeName] = Route(fromCode,from,toCode,to,distance);
-            //add this as an outbound flight to departure airport
-            from->addRoute(&routes.at(routeCodeName));
-        }
-    }
+   addRoute(fromCode,toCode,true,distance);
 }
 
 void Graph::addRoute(string fromCode, string toCode) {
+    if(!_weighted) addRoute(fromCode,toCode,true,0);
+    else addRoute(fromCode,toCode,false,0);
+}
+
+void Graph::addRoute(string fromCode, string toCode, bool distanceProvided, int distance) {
     //identifier for this route
+    if(routeExists(fromCode,toCode)) return;
+
     string routeCodeName = route_util::getRouteCode(fromCode,toCode);
-    unordered_map<string,Route>::iterator routeLookup = routes.find(routeCodeName);
-    if(routeLookup != routes.end()) return;     //if present simpy return
     unordered_map<string,Airport>::iterator lookup = airportMapByCode.find(fromCode);
     if(lookup != airportMapByCode.end()) {  //if departure airport exists
         Airport* from = &(lookup->second);
         lookup = airportMapByCode.find(toCode);
         if(lookup != airportMapByCode.end()) {  //if arrival airport exists
             Airport* to = &(lookup->second);
-            routes[routeCodeName] = Route(fromCode,from,toCode,to);
+            if(distanceProvided) {
+                routes[routeCodeName] = Route(fromCode,from,toCode,to,distance);
+            } else {
+                routes[routeCodeName] = Route(fromCode,from,toCode,to);
+            }
             //add this as an outbound flight to departure airport
-            from->addRoute(&routes.at(routeCodeName));
+            Route* rp = &routes.at(routeCodeName);
+            from->addRoute(rp);
+            if(!_directed) to->addRoute(rp);    //if not directed add the same to reverse
         }
     }
 }

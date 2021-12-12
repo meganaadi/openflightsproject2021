@@ -127,12 +127,12 @@ string UserCommand::executeBFS() {
             vector<const Route*> routes = sd.searchMyFlight(graph,commands[1],iataCode);
             string s = search_sp_util::displayMyFlight(routes);
             return s;
-    } **/
+    }*/
     return "Implement BFS!";
 }
 
 string UserCommand::executeIDS() {
-    /**std::cout << "Entering executeIDS()"  << std::endl;
+    /*std::cout << "Entering executeIDS()"  << std::endl;
     size_t count = commands.size();
     string iataCode = "";
     switch (count) {
@@ -160,6 +160,6 @@ string UserCommand::executeIDS() {
             vector<Airport> airports_ = sd.searchMyFlight(graph,commands[1],iataCode);
             string s = search_sp_util::displayMyFlight(routes);
             return s;
-    } **/
+    }*/
     return USER_HINT;
 }

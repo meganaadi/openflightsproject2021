@@ -14,7 +14,7 @@ string search_sp_util::displayMyFlight(vector<const Route*> routes) {
     for(const Route* rp : routes) {
         s = s + rp->getFromCode() + " >> ";
     }
-    s = s + routes[size-1]->getToCode() + " :) ";
+    s = s + routes[size-1]->getToCode();
     return s;
 }
 

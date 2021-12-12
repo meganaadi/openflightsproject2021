@@ -48,6 +48,7 @@ class Airport {
          * @return vector<Airport*> 
          */
         vector<Airport*> getAdjacent() const;
+        vector<Airport*> getAdjacent(bool directed) const;
 
         //==============================
 
