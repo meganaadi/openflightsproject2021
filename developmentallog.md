@@ -18,3 +18,5 @@ Possibly making minor changes in the Airport class and Route class, maybe adding
 We finished working on the template for our individual parts at this point. During the meeting we went over our individual parts. This includes BFS, Dijkstra's algorithm, and the IDDFS algorithm. We clarified a few implementations as well as worked together to resolve any issues that came up. The algorithms are now working, so we are working on test cases.
 
 
+12/11/2021
+We discussed our progress, we discovered some bugs within Dijkstra's algorithm. It works for the small dataset, but the runtime is too long for the large dataset. For BFS and IDDFS algorithm, we haven't worked with the test cases yet and don't know yet what the runtime is or if the code will pass the test cases. We worked on our user command line for BFS and IDDFS, but they're not done yet. At the moment, the airport codes inputs can only be all capital letters.
