@@ -7,6 +7,16 @@
 
 using namespace std;
 
+string Search_IDDFS::displayMyFlight(vector<const Airport> airport_) {
+    size_t size = airport_.size();
+    string s = "";
+    for(Airport rp : airport_) {
+        s = s + rp.getIataCode() + " >> ";
+    }
+    s = s + " :) ";
+    return s;
+}
+
 vector<Airport> Search_IDDFS::IDDFS(Graph G, Airport& fromCode, Airport& toCode, int maxdepth){
     for (int i = 0; i < maxdepth; i++){
         if (FoundAnswer == true){

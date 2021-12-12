@@ -17,6 +17,7 @@ class Search_IDDFS {
 
         vector<Airport> IDDFS(Graph G, Airport& fromCode, Airport& toCode, int maxdepth);
         vector<Airport> DLS(Graph G, Airport& fromCode, Airport& toCode, int limitdepth);
+        string displayMyFlight(vector<const Airport> airport_);
     private:
         bool FoundAnswer = false;
         vector<Airport> answer;

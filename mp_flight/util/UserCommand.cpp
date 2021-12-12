@@ -100,12 +100,66 @@ string UserCommand::executeSearch() {
 
 string UserCommand::executeBFS() {
     std::cout << "Entering executeBFS()"  << std::endl;
-
+    size_t count = commands.size();
+    string iataCode = "";
+    switch (count) {
+        case 1: //search ?
+            return "Searh Flight: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
+        case 2: //search START ?
+            iataCode = commands[1];
+            if(!graph.airportExists(iataCode)) {    //airport NOT found!
+                commands.pop_back();
+                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
+                    ENTER_DEPARTURE_AIRPORT_CODE;
+            }
+            //airport found
+            return "Searh Flight: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
+            
+        case 3: //search START END
+            iataCode = commands[2];
+            if(!graph.airportExists(iataCode)) {
+                commands.pop_back();
+                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
+                    ENTER_ARRIVAL_AIRPORT_CODE;
+            }
+            //everything looks good for airport search
+            Search_BFS sd;
+            vector<const Route*> routes = sd.searchMyFlight(graph,commands[1],iataCode);
+            string s = search_sp_util::displayMyFlight(routes);
+            return s;
+    }
     return "Implement BFS!";
 }
 
 string UserCommand::executeIDS() {
     std::cout << "Entering executeIDS()"  << std::endl;
-
-    return "Implement IDDFS!";
+    size_t count = commands.size();
+    string iataCode = "";
+    switch (count) {
+        case 1: //search ?
+            return "Searh Flight: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
+        case 2: //search START ?
+            iataCode = commands[1];
+            if(!graph.airportExists(iataCode)) {    //airport NOT found!
+                commands.pop_back();
+                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
+                    ENTER_DEPARTURE_AIRPORT_CODE;
+            }
+            //airport found
+            return "Searh Flight: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
+            
+        case 3: //search START END
+            iataCode = commands[2];
+            if(!graph.airportExists(iataCode)) {
+                commands.pop_back();
+                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
+                    ENTER_ARRIVAL_AIRPORT_CODE;
+            }
+            //everything looks good for airport search
+            Search_IDDFS sd;
+            vector<Airport> airports_ = sd.searchMyFlight(graph,commands[1],iataCode);
+            string s = search_sp_util::displayMyFlight(routes);
+            return s;
+    }
+    return USER_HINT;
 }
