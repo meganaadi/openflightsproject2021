@@ -5,8 +5,7 @@
 #include <stdexcept>
 #include <queue>
 
-void Search_BFS::BFS(Graph& G) {
-    
+void Search_BFS::init(Graph& G) {
     for (auto& pair: G.getAirports()) {
         Airport& airport = pair.second;
         airport.setLabel(graph_util::UNEXPLORED);
@@ -15,7 +14,12 @@ void Search_BFS::BFS(Graph& G) {
             route.second->setLabel(graph_util::UNEXPLORED);
         }
     }
+    initComplete = true;
+}
 
+void Search_BFS::BFS(Graph& G) {
+    initComplete = false;
+    init(G);
     for (auto& pair: G.getAirports()) {
         Airport& airport = pair.second;
         if(airport.getLabel() == graph_util::UNEXPLORED) {
@@ -25,7 +29,9 @@ void Search_BFS::BFS(Graph& G) {
 }
 
 void Search_BFS::BFS(Graph& G, Airport& airport) {
+    if(!initComplete) init(G);
     string iataCode = airport.getIataCode();
+    std::cout << "Current BFS node: " << iataCode << std::endl;
     if(!G.airportExists(iataCode)) return;
     std::queue <string> myQueue;
     airport.setLabel(graph_util::VISITED);
@@ -38,6 +44,7 @@ void Search_BFS::BFS(Graph& G, Airport& airport) {
         const vector<string>& adjacent = G.getAdjacent(iataCode);
         for(string adjacentAirportCode : adjacent) {
             Airport& neighbor = G.getAirport(adjacentAirportCode);
+            std::cout << "Current BFS neightbor: " << neighbor.getIataCode() << std::endl;
             //if this is not visited
             if(neighbor.getLabel() == graph_util::UNEXPLORED) {
                 neighbor.setLabel(graph_util::VISITED);

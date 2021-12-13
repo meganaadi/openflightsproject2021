@@ -1,4 +1,3 @@
-
 #include "Route.h"
 
 # include <cmath>
@@ -45,6 +44,7 @@ void Route::initValues() {
 
 Route::Route() {
     fromCode = route_util::INVALID_AIRPORT_CODE;
+    toCode = route_util::INVALID_AIRPORT_CODE;
 }
 
 Route::Route(string _fromCode, Airport* _from, 
@@ -95,4 +95,3 @@ void Route::setLabel(string _label) {
 int Route::getDistance() const {
     return distance;
 }
-

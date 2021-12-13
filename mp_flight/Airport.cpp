@@ -50,6 +50,7 @@ void Airport::copy(const Airport& other) {
 void Airport::addRoute(Route* route) {
     //see if it's present
     string codeName = route->getCodeName();
+    std::cout << "In Airport::addRoute(...); Route Code Name: " << codeName << std::endl;
     unordered_map<string,Route*>::iterator lookup = routes.find(codeName);
     if(lookup == routes.end()) {
         //not there so add it
@@ -57,13 +58,26 @@ void Airport::addRoute(Route* route) {
     }
 }
 
-vector<Airport*> Airport::getAdjacent() const {
+vector<Airport*> Airport::getAdjacent(bool directed) const {
+    std::cout << "In Airport::getAdjacent(); This node: " << iataCode << std::endl;
     unordered_map<string,Route*>::const_iterator iter = routes.begin();
     vector<Airport*> adjacent;
     for(; iter != routes.end(); iter++) {
-        adjacent.push_back(iter->second->getTo());
+        Route * rp = iter->second;
+        Airport* ap = rp->getTo();
+        string airportCode = ap->getIataCode();
+        std::cout << "Current BFS neightbor: " << airportCode << std::endl;
+        if(!directed && getIataCode() == airportCode) {
+            ap = rp->getFrom(); //handling directed graph
+            std::cout << "Reversing with: " << ap->getIataCode() << std::endl;
+        }
+        adjacent.push_back(ap);
     }
     return adjacent;
+}
+
+vector<Airport*> Airport::getAdjacent() const {
+    return getAdjacent(true);
 }
 
 unordered_map<string,Route*> Airport::getRoutes() const {
@@ -99,4 +113,3 @@ void Airport::setLabel(string _label) {
 string Airport::getLabel() const {
     return label;
 }
-

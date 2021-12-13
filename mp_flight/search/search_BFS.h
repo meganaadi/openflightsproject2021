@@ -20,5 +20,9 @@ class Search_BFS {
             void BFS(Graph& G, Airport& airport);
 
         private:
+            //unordered_map<string,string> predecessor;
+
+            bool initComplete = false;
+            void init(Graph& G);
 
 };

@@ -45,7 +45,7 @@ class Graph {
 
         vector<string> getAdjacent(string iataCode) ;
 
-        bool routeExists(string fromCode, string toCode) const;
+        bool routeExists(string fromCode, string toCode) ;
 
         Route* getRoute(string fromCode, string toCode) ;
 
@@ -84,6 +84,8 @@ class Graph {
 
         size_t getNumberOfAirports();
 
+        const unordered_map<string,Route>& getRoutes() const;
+
 
     private:
         bool _weighted;
@@ -92,4 +94,6 @@ class Graph {
         unordered_map<string,Route> routes;
 
         void copy(const Graph& other);
+
+        void addRoute(string fromCode, string toCode, bool distanceProvided, int distance);
 };
