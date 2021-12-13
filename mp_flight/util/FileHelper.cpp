@@ -126,37 +126,3 @@ void FileHelper::readRoutesAndAddtoGraph(const string fileName, char delim, Grap
 
 }
 
-/*
-std::unordered_map<string,Route> FileHelper::getRouteMapByCode(const string fileName, char delim, unordered_map<string,Airport>& airportByCode) {
-    std::cout << "Entering: getRouteMapByCode(...)" << std::endl;
-    //read csv
-    vector<vector<string>> attributesByLine = getAttributesByLine(fileName,delim);
-
-     unordered_map<string,Route> routes = unordered_map<string,Route>();
-     routes.reserve(1.4 * attributesByLine.size());
-    for(vector<string> attributes : attributesByLine) {
-        if(attributes.size() < 5) continue;
-        //get source and destination
-        string fromCode = attributes[2];
-        string toCode  = attributes[4];
-        //if this is already in there - nothig to do
-        string routeCode = route_util::getRouteCode(fromCode,toCode);
-        unordered_map<string,Route>::iterator routeLookup = routes.find(routeCode);
-        if(routeLookup != routes.end()) continue;
-
-        unordered_map<string,Airport>::iterator lookup = airportByCode.find(fromCode);
-        if(lookup != airportByCode.end()) {
-            Airport* from = &(lookup->second);
-            lookup = airportByCode.find(toCode);
-            if(lookup != airportByCode.end()) {
-                Airport* to = &(lookup->second);
-                string routeCodeName = route_util::getRouteCode(fromCode,toCode);
-                routes[routeCodeName] = Route(fromCode,from,toCode,to);
-                from->addRoute(&routes.at(routeCodeName));
-            }
-        }
-        
-    }
-    std::cout << "Total Number of Routes: " << routes.size()  << std::endl;
-    return routes;
-}  */

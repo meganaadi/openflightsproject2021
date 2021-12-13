@@ -1,8 +1,10 @@
 #include "UserCommand.h"
 #include "FileHelper.h"
 #include "../search/search_dijkstra.h"
+#include "../search/search_BFS.h"
+#include "../search/search_IDDFS.h"
 
-
+#include <fstream>
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -10,6 +12,7 @@
 using std::string;
 using std::vector;
 using std::unordered_map;
+using std::ifstream;
 
 UserCommand::UserCommand() {}
 
@@ -49,18 +52,46 @@ string UserCommand::executeInstruction(const string userInput) {
 string UserCommand::executeLoad() {
     std::cout << "Entering executeLoad()"  << std::endl;
     size_t count = commands.size();
+    FileHelper helper;
     switch (count) {
-        case 1: 
-            return LOAD_AIRPORT_QUESTION;
-        default:
-            FileHelper helper;
-            string fileName = (commands[1] == "1") ? "data/airports_small.dat" : "data/airports.dat";
-            const std::unordered_map<string,Airport>& airports = helper.getAirportMapByCode(fileName, ',',true);
-            graph = Graph(true,true);
-            graph.setAirports(airports);
-            std::cout << "Loading route data at data/routes.dat"  << std::endl;
-            helper.readRoutesAndAddtoGraph("data/routes.dat",',',graph);
+        case 1: {
+            return LOAD_AIRPORT_FILE;
+        } 
+        case 2: {
+            string fileName = commands[1];
+            ifstream inputFile(fileName); 
+            if( ! (inputFile.good()) ) {
+                std::cout << "Loading Airport data:" << fileName  << std::endl;
+                commands.pop_back();
+                return RE_LOAD_AIRPORT_FILE;
+            } else {
+                inputFile.close();
+                return LOAD_ROUTE_FILE;
+            }
+        }
+        default :
+            string fileName2  = commands[2];
+            /*
+            for(unsigned int i=0; i<commands.size(); i++) {
+                std::cout << "User input " << i << "::" << commands[i] << "::" << std::endl;
+            } */
+            ifstream inputFile2(fileName2); 
+            if( ! (inputFile2.good()) ) {
+                std::cout << "Loading Route data:" << fileName2  << std::endl;
+                commands.pop_back();
+                return RE_LOAD_ROUTE_FILE;
+            }
+            inputFile2.close();
     }
+    string airportfileName = commands[1];
+    string routeFileName  = commands[2];
+
+    std::cout << "Loading Airport data:" << airportfileName  << std::endl; 
+    const std::unordered_map<string,Airport>& airports = helper.getAirportMapByCode(airportfileName, ',',true);
+    graph = Graph(true,true);
+    graph.setAirports(airports);
+    std::cout << "Loading Route data:" << routeFileName  << std::endl; 
+    helper.readRoutesAndAddtoGraph(routeFileName,',',graph);  
     commands.clear();
     return "Data Loaded successfully!! \n" + USER_HINT;
 }
@@ -71,7 +102,7 @@ string UserCommand::executeSearch() {
     string iataCode = "";
     switch (count) {
         case 1: //search ?
-            return "Searh Flight: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
+            return "Search Flight: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
         case 2: //search START ?
             iataCode = commands[1];
             if(!graph.airportExists(iataCode)) {    //airport NOT found!
@@ -80,7 +111,7 @@ string UserCommand::executeSearch() {
                     ENTER_DEPARTURE_AIRPORT_CODE;
             }
             //airport found
-            return "Searh Flight: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
+            return "Search Flight: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
             
         case 3: //search START END
             iataCode = commands[2];
@@ -91,20 +122,22 @@ string UserCommand::executeSearch() {
             }
             //everything looks good for airport search
             Search_Dijkstra sd;
-            vector<const Route*> routes = sd.searchMyFlight(graph,commands[1],iataCode);
+            Graph graph2(graph);
+            vector<const Route*> routes = sd.searchMyFlight(graph2,commands[1],iataCode);
             string s = search_sp_util::displayMyFlight(routes);
             return s;
     }
+    commands.clear();   //clear all command input
     return USER_HINT;
 }
 
 string UserCommand::executeBFS() {
-    /**std::cout << "Entering executeBFS()"  << std::endl;
+    std::cout << "Entering executeSearch()"  << std::endl;
     size_t count = commands.size();
     string iataCode = "";
     switch (count) {
         case 1: //search ?
-            return "Searh Flight: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
+            return "Starting Airport(vertex): \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
         case 2: //search START ?
             iataCode = commands[1];
             if(!graph.airportExists(iataCode)) {    //airport NOT found!
@@ -112,54 +145,65 @@ string UserCommand::executeBFS() {
                 return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
                     ENTER_DEPARTURE_AIRPORT_CODE;
             }
-            //airport found
-            return "Searh Flight: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
-            
-        case 3: //search START END
-            iataCode = commands[2];
-            if(!graph.airportExists(iataCode)) {
-                commands.pop_back();
-                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
-                    ENTER_ARRIVAL_AIRPORT_CODE;
-            }
-            //everything looks good for airport search
-            Search_BFS sd;
-            vector<const Route*> routes = sd.searchMyFlight(graph,commands[1],iataCode);
-            string s = search_sp_util::displayMyFlight(routes);
-            return s;
-    }*/
-    return "Implement BFS!";
+        //start of BFS
+        Graph graph2(graph);
+        Search_BFS bfs;
+        bfs.BFS(graph2, graph2.getAirport(iataCode));
+        for(auto& elem : graph2.getRoutes()) {
+          Route r = elem.second;
+          string label = r.getFromCode() + " " + r.getLabel() + " " + r.getToCode();
+          std::cout << label << std::endl;
+        }   
+    }
+    commands.clear();   //clear all command input
+    return "finished!   >>> " + USER_HINT;
 }
 
 string UserCommand::executeIDS() {
-    /*std::cout << "Entering executeIDS()"  << std::endl;
+    std::cout << "Entering executeIDS()"  << std::endl;
     size_t count = commands.size();
     string iataCode = "";
     switch (count) {
-        case 1: //search ?
-            return "Searh Flight: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
-        case 2: //search START ?
+        case 1: { //search ?
+            return "Starting Airport Code: \n        " + ENTER_DEPARTURE_AIRPORT_CODE;
+        }
+        case 2: { //search START ?
             iataCode = commands[1];
             if(!graph.airportExists(iataCode)) {    //airport NOT found!
                 commands.pop_back();
-                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
+                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Search Flight: \n        " + 
                     ENTER_DEPARTURE_AIRPORT_CODE;
             }
             //airport found
-            return "Searh Flight: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
+            return "Ending Airport Code: \n        " + ENTER_ARRIVAL_AIRPORT_CODE;
             
-        case 3: //search START END
+        }
+        case 3: { //search START END
             iataCode = commands[2];
             if(!graph.airportExists(iataCode)) {
                 commands.pop_back();
-                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Searh Flight: \n        " + 
+                return AIRPORT_NOT_IN_GRAPH + iataCode + " >>\n    " + "Search Flight: \n        " + 
                     ENTER_ARRIVAL_AIRPORT_CODE;
             }
-            //everything looks good for airport search
-            Search_IDDFS sd;
-            vector<Airport> airports_ = sd.searchMyFlight(graph,commands[1],iataCode);
-            string s = search_sp_util::displayMyFlight(routes);
-            return s;
-    }*/
-    return USER_HINT;
+            return "Enter limiting depth (INTEGER NUMBER): \n ";
+        }
+        case 4: {
+            for(unsigned int i=0; i<commands.size(); i++) {
+                std::cout << "User input " << i << "::" << commands[i] << "::" << std::endl;
+            }
+            string d = commands[3];
+            int depth = stoi(d);
+            //time to executs IDDFS
+            Graph graph2(graph);
+            Search_IDDFS iddfs; 
+            std::cout << "IIDFS from: " << commands[1] << "; to: " << commands[2] << "; with a max depth of: " << depth << std::endl;
+            bool found = iddfs.IDDFS(graph2, commands[1], commands[2], depth);
+            std::cout << "IIDFS Result: " << found << std::endl;
+                
+        }
+        
+        
+    }
+    commands.clear();   //clear all command input
+    return "IIDFS finished!   >>> " + USER_HINT;
 }

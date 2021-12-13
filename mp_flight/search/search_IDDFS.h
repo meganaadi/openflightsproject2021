@@ -12,15 +12,31 @@
 
 using namespace std;
 
+#pragma once
+
+#include "../Airport.h"
+#include "../Route.h"
+#include "../Graph.h"
+
+#include <iostream>
+#include <unordered_map>
+#include <stack>
+#include <map>
+#include <string>
+
+using namespace std;
+
 class Search_IDDFS {
     public:
 
-        vector<Airport> IDDFS(Graph G, Airport& fromCode, Airport& toCode, int maxdepth);
-        vector<Airport> DLS(Graph G, Airport& fromCode, Airport& toCode, int limitdepth);
-        string displayMyFlight(vector<const Airport> airport_);
+       bool IDDFS(Graph& G, string _fromCode, string _toCode, int maxdepth);
+        bool DLS(string source, int limitdepth);
     private:
-        bool FoundAnswer = false;
-        vector<Airport> answer;
+        Graph* gp;
+        string fromCode;
+        string toCode;
+        vector<string> answer;
+        void init();
         
     
 };

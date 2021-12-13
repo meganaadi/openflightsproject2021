@@ -25,7 +25,19 @@ class UserCommand {
             "IDS      - Iterative deepening depth-first search \n";
 
         const string LOAD_AIRPORT_QUESTION =
-            "Loading Airport data set!!  Enter 1 for small set OR Enter 2 for large set!  << ";
+            "Loading Airport data set!!  Enter 1 for small set, Enter 2 for USA Airport set, OR enter 3 for YOUR OWN SET  << ";
+
+        const string LOAD_AIRPORT_FILE =
+            "OK, input airport data set File Name << ";
+
+        const string RE_LOAD_AIRPORT_FILE =
+            "You entered an invalid airport file! Input airport data set File Name << ";
+
+        const string LOAD_ROUTE_FILE =
+            "OK, input Route data set File Name << ";
+
+        const string RE_LOAD_ROUTE_FILE =
+            "You entered an invalid Route file! Input Route data set File Name << ";
 
         const string LOAD_DATA_HINT = 
             "Load airport data first!!!";

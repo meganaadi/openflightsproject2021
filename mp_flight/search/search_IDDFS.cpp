@@ -7,62 +7,41 @@
 
 using namespace std;
 
-string Search_IDDFS::displayMyFlight(vector<const Airport> airport_) {
-    size_t size = airport_.size();
-    string s = "";
-    for(Airport rp : airport_) {
-        s = s + rp.getIataCode() + " >> ";
-    }
-    s = s + " :) ";
-    return s;
-}
-
-vector<Airport> Search_IDDFS::IDDFS(Graph G, Airport& fromCode, Airport& toCode, int maxdepth){
-    for (int i = 0; i < maxdepth; i++){
-        if (FoundAnswer == true){
-            return answer;
-        }
-        else {
-            DLS(G, fromCode, toCode, i);
-        }
-    }
-    return vector<Airport>();
-}
-
-vector<Airport> Search_IDDFS::DLS(Graph G, Airport& fromCode, Airport& toCode, int limitdepth){
+void Search_IDDFS::init() {
+    answer.clear();
+    
     // Mark all airports not visited
-    for (auto& pair: G.getAirports()){
+    for (auto& pair: gp->getAirports()){
         Airport& airport = pair.second;
         airport.setLabel(graph_util::UNEXPLORED);
     }
-   
-    // Initialize DLS
-    stack<Airport> AirportStack;
-    AirportStack.push(fromCode);
-    Airport current = fromCode;
-    //DLS
-    while (!AirportStack.empty()){
-        if (limitdepth < 0){
-            break;
+}
+
+bool Search_IDDFS::IDDFS(Graph& G, string _fromCode, string _toCode, int maxdepth) {
+    gp = &G;
+    fromCode = _fromCode;
+    toCode = _toCode;
+    for (int i = 0; i < maxdepth; i++){
+        init();
+        std::cout << "Current Depth Limit: " << i << std::endl;
+        bool found = DLS(_fromCode, i);
+        if(found) return true;
+    }
+    return false;
+}
+
+bool Search_IDDFS::DLS(string source, int limitdepth) {
+    if (source == toCode) return true;
+    if (limitdepth <= 0) return false;
+
+    Airport& currentAirport = gp->getAirport(source);
+    if (currentAirport.getLabel() == graph_util::UNEXPLORED){
+        currentAirport.setLabel(graph_util::VISITED);
+        for(string adjacentAirportCode : gp->getAdjacent(source)) {
+            bool found = DLS(adjacentAirportCode,limitdepth-1);
+            if(found) return true;
         }
-        current = AirportStack.top();
-        AirportStack.pop();
-        if (current.getLabel() == graph_util::UNEXPLORED){
-            current.setLabel(graph_util::VISITED);
-            answer.push_back(current);
-        }
-        if (current.getIataCode() == toCode.getIataCode()){
-            FoundAnswer = true;
-            break;
-        }
-        for(string adjacentAirportCode : G.getAdjacent(current.getIataCode())){
-            Airport neighbor = G.getAirport(adjacentAirportCode);
-            if (neighbor.getLabel() == graph_util::UNEXPLORED){
-                AirportStack.push(neighbor);
-            }
-        }
-        limitdepth--;
     }
 
-    return answer;
+    return false;
 }
