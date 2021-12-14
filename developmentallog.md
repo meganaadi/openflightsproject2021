@@ -20,3 +20,7 @@ We finished working on the template for our individual parts at this point. Duri
 
 12/11/2021
 We discussed our progress, and we discovered some bugs within Dijkstra's algorithm. It works for the small dataset, but the runtime is too long for the large dataset. For the BFS and IDDFS algorithms, we haven't worked with the test cases yet and don't know yet what the runtime is or if the code will pass the test cases. We worked on our user command line for BFS and IDDFS, but they're not done yet. At the moment, the airport code inputs can only be all capital letters.
+
+12/12/2021
+We finished the project presentation and the readME file. We recorded our video of our presentation and it's linked here: https://drive.google.com/file/d/1uPXKaRj1xxi9BCT8GeR-t0kW-8-Dh0He/view?usp=sharing 
+We are finishing up the project report, just tidying some things up in the results section. We have fixed our issues with the test cases and with the the user command line, so now all algorithms are fully functional. We still have long runtimes with the full dataset, but that is to be expected with how many lines it has. 
